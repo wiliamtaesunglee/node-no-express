@@ -1,7 +1,18 @@
-import http from 'node:http'
+import http from "node:http";
+import { routes } from "./routes.js";
 
 const server = http.createServer((req, res) => {
-  return res.end('hello world')
-})
+  const { method, url } = req;
 
-server.listen(3000)
+  const route = routes.find((route) => {
+    return route.method === method && route.path === url;
+  });
+
+  if (route) {
+    return route.handler(req, res);
+  }
+
+  return res.writeHead(404).end();
+});
+
+server.listen(3000);

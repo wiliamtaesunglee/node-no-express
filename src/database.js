@@ -24,7 +24,7 @@ export class Database {
   insert(table, data) {
     const database = this.#database[table] ?? [];
     database.push(data);
-    this.#database = database;
+    this.#database[table] = database;
 
     this.#persist();
 

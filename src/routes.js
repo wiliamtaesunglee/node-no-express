@@ -34,6 +34,19 @@ export const routes = [
     },
   },
   {
+    method: "UPDATE",
+    path: buildRoutePath("/users/:id"),
+    handler: (req, res) => {
+      const { name, email } = req.body;
+      database.update("users", {
+        name,
+        email,
+        id: req.params.id,
+      });
+      return res.end();
+    },
+  },
+  {
     method: "DELETE",
     path: buildRoutePath("/users/:id"),
     handler: (req, res) => {

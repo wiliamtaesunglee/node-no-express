@@ -8,9 +8,10 @@ export class Database {
   constructor() {
     fs.readFile(databasePath, "utf8")
       .then((data) => {
-        this.#database = JSON.parse(data);
+        console.log({ data });
+        this.#database = JSON?.parse(data);
       })
-      .catch(() => this.#persist());
+      .catch(() => (this.#database = {}));
   }
 
   #persist() {
@@ -18,6 +19,7 @@ export class Database {
   }
 
   select(table) {
+    console.log({ select: this.#database });
     return this.#database[table] ?? [];
   }
 
@@ -29,6 +31,14 @@ export class Database {
     this.#persist();
 
     return data;
+  }
+
+  update(table, id, data) {
+    const rowIndex = this.#database[table].findIndex((row) => row.id === id);
+    if (rowIndex > -1) {
+      this.#database[table] = { id, ...data };
+      this.#persist();
+    }
   }
 
   delete(table, id) {

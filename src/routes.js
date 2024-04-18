@@ -34,14 +34,15 @@ export const routes = [
     },
   },
   {
-    method: "UPDATE",
+    method: "PUT",
     path: buildRoutePath("/users/:id"),
     handler: (req, res) => {
+      const { id } = req.params;
       const { name, email } = req.body;
-      database.update("users", {
+      database.update("users", id, {
         name,
         email,
-        id: req.params.id,
+        id,
       });
       return res.end();
     },
@@ -50,7 +51,6 @@ export const routes = [
     method: "DELETE",
     path: buildRoutePath("/users/:id"),
     handler: (req, res) => {
-      console.log(req.params);
       database.delete("users", req.params.id);
       return res.end();
     },
